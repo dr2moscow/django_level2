@@ -12,7 +12,7 @@ from adminapp.views import (
     products,
     # product_read,
     product_create,
-    product_delete, UserListView, UserCreateView, product_read,
+    product_delete, UserListView, UserCreateView, ProductDetailView,
 )
 
 app_name = 'adminapp'
@@ -30,7 +30,7 @@ urlpatterns = [
 
     path('products/create/category/<int:pk>/', product_create, name='product_create'),
     path('products/read/category/<int:pk>/', products, name='products'),
-    path('products/read/<int:pk>/', product_read, name='product_read'),
+    path('products/read/<int:pk>/', ProductDetailView.as_view(), name='product_read'),
     path('products/update/<int:pk>/', product_update, name='product_update'),
     path('products/delete/<int:pk>/', product_delete, name='product_delete'),
 ]

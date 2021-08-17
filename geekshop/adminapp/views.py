@@ -1,7 +1,8 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
-from adminapp.froms import ProductEditForm, CategoryEditForm
+
+from adminapp.froms import ProductEditForm
 from authapp.forms import ShopUserRegisterForm
 from authapp.models import ShopUser
 from mainapp.models import ProductCategory, Product
@@ -9,6 +10,18 @@ from django.contrib.auth.decorators import user_passes_test
 from django.views.generic import ListView, CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+
+# def users(request):
+#     title = 'админка/пользователи'
+#
+#     users_list = ShopUser.objects.all().order_by('-is_active', '-is_superuser', '-is_staff', 'username')
+#
+#     context = {
+#         'title': title,
+#         'objects': users_list
+#     }
+#
+#     return render(request, 'adminapp/users.html', context)
 
 class UserListView(LoginRequiredMixin, ListView):
     model = ShopUser
@@ -26,6 +39,25 @@ class UserListView(LoginRequiredMixin, ListView):
         return context
 
 
+# def user_create(request):
+#     title = 'пользователи/создание'
+#
+#     if request.method == 'POST':
+#         user_form = ShopUserRegisterForm(request.POST, request.FILES)
+#         if user_form.is_valid():
+#             user_form.save()
+#             return HttpResponseRedirect(reverse('admin_staff:users'))
+#
+#     else:
+#         user_form = ShopUserRegisterForm()
+#
+#     context = {
+#         'title': title,
+#         'update_form': user_form
+#     }
+#
+#     return render(request, 'adminapp/user_update.html', context)
+
 class UserCreateView(LoginRequiredMixin, CreateView):
     model = ShopUser
     template_name = 'adminapp/user_update.html'
@@ -41,11 +73,43 @@ class UserCreateView(LoginRequiredMixin, CreateView):
 
 
 def user_update(request, pk):
-    pass
+    title = 'пользователи/рудактирование'
+
+    edit_user = get_object_or_404(ShopUser, pk=pk)
+
+    if request.method == 'POST':
+        edit_form = ShopUserAdminEditForm(request.POST, request.FILES, instance=edit_user)
+        if edit_form.is_valid():
+            edit_form.save()
+
+            return HttpResponseRedirect(reverse('admin_staff:users'))
+    else:
+        edit_form = ShopUserAdminEditForm(instance=edit_user)
+
+    context = {
+        'title': title,
+        'user_form': edit_form,
+    }
+
+    return render(request, 'adminapp/user_update.html', context)
 
 
 def user_delete(request, pk):
-    pass
+    title = 'пользователи/удаление'
+
+    user = get_object_or_404(ShopUser, pk=pk)
+
+    if request.method == 'POST':
+        # user.delete()
+        # вместо удаления лучше сделаем неактивным
+        user.is_deleted = True
+        user.is_active = False
+        user.save()
+        return HttpResponseRedirect(reverse('admin_staff:users'))
+
+    context = {'title': title, 'user_to_delete': user}
+
+    return render(request, 'adminapp/user_delete.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -63,38 +127,14 @@ def categories(request):
 
 
 def category_create(request):
-    title = 'категория/создание'
-    category = get_object_or_404(ProductCategory)
-
-    if request.method == 'POST':
-        category_form = CategoryEditForm(request.POST, request.FILES)
-        if category_form.is_valid():
-            category_form.save()
-            return HttpResponseRedirect(reverse('adminapp:categories'))
-    else:
-        category_form = CategoryEditForm(initial={'category': category})
-
-    context = {
-        'title': title,
-        'update_form': category_form,
-        'category': category,
-    }
-    return render(request, 'adminapp/category_update.html', context)
+    pass
 
 
 def category_update(request, pk):
-    title = 'категория/редактирование'
-    category = get_object_or_404(ProductCategory, pk=pk)
     pass
 
 
 def category_delete(request, pk):
-    category = get_object_or_404(ProductCategory, pk=pk)
-
-    if request.method == 'GET':
-        category.is_active = False if category.is_active else True
-        category.save()
-        return HttpResponseRedirect(reverse('adminapp:categories', args=[category.pk]))
     pass
 
 
@@ -111,6 +151,7 @@ def products(request, pk):
     }
 
     return render(request, 'adminapp/products.html', context)
+
 
 
 def product_create(request, pk):
@@ -133,14 +174,21 @@ def product_create(request, pk):
     return render(request, 'adminapp/product_update.html', context)
 
 
-def product_read(request, pk):
-    title = 'продукт/подробнее'
-    product = get_object_or_404(Product, pk=pk)
-    context = {
-        'title': title,
-        'product': product,
-    }
-    return render(request, 'adminapp/product_read.html', context)
+# def product_read(request, pk):
+#     title = 'продукты/подробнее'
+#     product = get_object_or_404(Product, pk=pk)
+#     context = {
+#         'title': title,
+#         'product': product,
+#     }
+#     return render(request, 'adminapp/product_read.html', context)
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'adminapp/product_read.html'
+
+    def get(self, request, *args, **kwargs):
+        print(request)
 
 
 def product_update(request, pk):
