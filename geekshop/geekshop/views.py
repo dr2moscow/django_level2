@@ -1,4 +1,9 @@
 from django.shortcuts import render
+from django.views.generic.base import TemplateView
+
+
+class ErrorPage(TemplateView):
+    template_name = 'geekshop/error.html'
 
 
 def index(request):
