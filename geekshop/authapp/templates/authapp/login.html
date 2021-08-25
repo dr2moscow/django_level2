@@ -26,5 +26,10 @@
              Вход через ВКонтакте
             </a>
         </button>
+        <button class="btn btn-round form-control">
+            <a href="{% url 'social:begin' 'odnoklassniki' %}?next=/">
+             Вход через Одноклассники
+            </a>
+        </button>
     </div>
 {% endblock %}
