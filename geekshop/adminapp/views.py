@@ -39,25 +39,6 @@ class UserListView(LoginRequiredMixin, ListView):
         return context
 
 
-# def user_create(request):
-#     title = 'пользователи/создание'
-#
-#     if request.method == 'POST':
-#         user_form = ShopUserRegisterForm(request.POST, request.FILES)
-#         if user_form.is_valid():
-#             user_form.save()
-#             return HttpResponseRedirect(reverse('admin_staff:users'))
-#
-#     else:
-#         user_form = ShopUserRegisterForm()
-#
-#     context = {
-#         'title': title,
-#         'update_form': user_form
-#     }
-#
-#     return render(request, 'adminapp/user_update.html', context)
-
 class UserCreateView(LoginRequiredMixin, CreateView):
     model = ShopUser
     template_name = 'adminapp/user_update.html'
