@@ -1,12 +1,15 @@
 from django.shortcuts import render
-from mainapp.views import get_basket
+from django.views.generic.base import TemplateView
+
+
+class ErrorPage(TemplateView):
+    template_name = 'geekshop/error.html'
 
 
 def index(request):
     title = 'магазин'
     context = {
         'title': title,
-        'basket': get_basket(request.user),
         'slogan': 'супер предложения',
     }
 
@@ -17,6 +20,5 @@ def contacts(request):
     title = 'контакты'
     context = {
         'title': title,
-        'basket': get_basket(request.user),
     }
     return render(request, 'geekshop/contact.html', context)
