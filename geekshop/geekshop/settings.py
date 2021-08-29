@@ -45,13 +45,11 @@ AUTH_USER_MODEL = 'authapp.ShopUser'
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.vk.VKOAuth2',
-    'social_core.backends.odnoklassniki.OdnoklassnikiOAuth2',
 )
 
 LOGIN_ERROR_URL = '/'
 SOCIAL_AUTH_VK_OAUTH2_IGNORE_DEFAULT_SCOPE = True
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'login.html'
 
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
@@ -63,13 +61,6 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
-    # 'social_auth.backends.pipeline.social.social_auth_user',
-    # 'social_auth.backends.pipeline.associate.associate_by_email',
-    # 'social_auth.backends.pipeline.user.get_username',
-    # 'social_auth.backends.pipeline.user.create_user',
-    # 'social_auth.backends.pipeline.social.associate_user',
-    # 'social_auth.backends.pipeline.social.load_extra_data',
-    # 'social_auth.backends.pipeline.user.update_user_details'
 )
 
 MIDDLEWARE = [
@@ -177,10 +168,4 @@ EMAIL_USE_TLS = False
 
 SOCIAL_AUTH_VK_OAUTH2_KEY = env('SOCIAL_AUTH_VK_OAUTH2_KEY')
 SOCIAL_AUTH_VK_OAUTH2_SECRET = env('SOCIAL_AUTH_VK_OAUTH2_SECRET')
-
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
-SOCIAL_AUTH_LOGIN_ERROR_URL = '/error_page/'
-
-ODNOKLASSNIKI_OAUTH2_CLIENT_KEY = '512000927811'
-ODNOKLASSNIKI_OAUTH2_APP_KEY = 'CEEJCDKGDIHBABABA'
-ODNOKLASSNIKI_OAUTH2_CLIENT_SECRET = '425D7DD6877975E5986AD965'

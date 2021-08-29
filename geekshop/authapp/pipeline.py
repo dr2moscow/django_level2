@@ -1,6 +1,6 @@
 from collections import OrderedDict
 from datetime import datetime
-from urllib.parse import urlencode, urlunparse
+from urllib.parse import urlencode, urlparse, urlunparse
 
 import requests
 from django.utils import timezone
@@ -28,11 +28,6 @@ def save_user_profile(backend, user, response, *args, **kwargs):
     if data['about']:
         user.shopuserprofile.about_me = data['about']
 
-    if data['bdate']:
-            bdate = datetime.strptime(data['bdate'], '%d.%m.%Y').date()
-            age = timezone.now().date().year - bdate.year
-            if age < 18 or age > 100:
-                user.delete()
-                raise AuthForbidden('social_core.backends.vk.VKOAuth2')
 
     user.save()
+
