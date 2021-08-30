@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand
+rom django.core.management.base import BaseCommand
 import json
 import os
 
@@ -9,7 +9,7 @@ JSON_PATH = 'mainapp/jsons'
 
 
 def load_from_json(file_name):
-    with open(os.path.join(JSON_PATH, file_name + '.json'), encoding='utf-8') as infile:
+    with open(os.path.join(JSON_PATH, file_name + '.json'), 'r') as infile:
         return json.load(infile)
 
 
