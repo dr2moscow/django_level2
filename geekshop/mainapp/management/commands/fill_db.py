@@ -1,4 +1,4 @@
-rom django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand
 import json
 import os
 
